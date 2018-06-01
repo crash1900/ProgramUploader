@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AscendDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AscendUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="20" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Movement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MovementName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProgramHeader">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BlockNo" Type="int" Nullable="false" />
+          <Property Name="WeekNo" Type="int" Nullable="false" />
+          <Property Name="DayNo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProgramHeaderMovement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProgramHeaderId" Type="int" Nullable="false" />
+          <Property Name="MovementId" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="Reps" Type="int" />
+          <Property Name="Sets" Type="int" />
+          <Property Name="Notes" Type="varchar" MaxLength="150" />
+          <Property Name="RPE" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_ProgramHeaderMovement_Movement">
+          <End Role="Movement" Type="Self.Movement" Multiplicity="1" />
+          <End Role="ProgramHeaderMovement" Type="Self.ProgramHeaderMovement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramHeaderMovement">
+              <PropertyRef Name="MovementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProgramHeaderMovement_ProgramHeader">
+          <End Role="ProgramHeader" Type="Self.ProgramHeader" Multiplicity="1" />
+          <End Role="ProgramHeaderMovement" Type="Self.ProgramHeaderMovement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramHeader">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramHeaderMovement">
+              <PropertyRef Name="ProgramHeaderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AscendDbModelStoreContainer">
+          <EntitySet Name="AscendUser" EntityType="Self.AscendUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Movement" EntityType="Self.Movement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramHeader" EntityType="Self.ProgramHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramHeaderMovement" EntityType="Self.ProgramHeaderMovement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ProgramHeaderMovement_Movement" Association="Self.FK_ProgramHeaderMovement_Movement">
+            <End Role="Movement" EntitySet="Movement" />
+            <End Role="ProgramHeaderMovement" EntitySet="ProgramHeaderMovement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProgramHeaderMovement_ProgramHeader" Association="Self.FK_ProgramHeaderMovement_ProgramHeader">
+            <End Role="ProgramHeader" EntitySet="ProgramHeader" />
+            <End Role="ProgramHeaderMovement" EntitySet="ProgramHeaderMovement" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AscendDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AscendUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Movement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MovementName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ProgramHeaderMovements" Relationship="Self.FK_ProgramHeaderMovement_Movement" FromRole="Movement" ToRole="ProgramHeaderMovement" />
+        </EntityType>
+        <EntityType Name="ProgramHeader">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BlockNo" Type="Int32" Nullable="false" />
+          <Property Name="WeekNo" Type="Int32" Nullable="false" />
+          <Property Name="DayNo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ProgramHeaderMovements" Relationship="Self.FK_ProgramHeaderMovement_ProgramHeader" FromRole="ProgramHeader" ToRole="ProgramHeaderMovement" />
+        </EntityType>
+        <EntityType Name="ProgramHeaderMovement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProgramHeaderId" Type="Int32" Nullable="false" />
+          <Property Name="MovementId" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="Reps" Type="Int32" />
+          <Property Name="Sets" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="RPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Movement" Relationship="Self.FK_ProgramHeaderMovement_Movement" FromRole="ProgramHeaderMovement" ToRole="Movement" />
+          <NavigationProperty Name="ProgramHeader" Relationship="Self.FK_ProgramHeaderMovement_ProgramHeader" FromRole="ProgramHeaderMovement" ToRole="ProgramHeader" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_ProgramHeaderMovement_Movement">
+          <End Role="Movement" Type="Self.Movement" Multiplicity="1" />
+          <End Role="ProgramHeaderMovement" Type="Self.ProgramHeaderMovement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movement">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramHeaderMovement">
+              <PropertyRef Name="MovementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProgramHeaderMovement_ProgramHeader">
+          <End Role="ProgramHeader" Type="Self.ProgramHeader" Multiplicity="1" />
+          <End Role="ProgramHeaderMovement" Type="Self.ProgramHeaderMovement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProgramHeader">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProgramHeaderMovement">
+              <PropertyRef Name="ProgramHeaderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AscendDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AscendUsers" EntityType="Self.AscendUser" />
+          <EntitySet Name="Movements" EntityType="Self.Movement" />
+          <EntitySet Name="ProgramHeaders" EntityType="Self.ProgramHeader" />
+          <EntitySet Name="ProgramHeaderMovements" EntityType="Self.ProgramHeaderMovement" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_ProgramHeaderMovement_Movement" Association="Self.FK_ProgramHeaderMovement_Movement">
+            <End Role="Movement" EntitySet="Movements" />
+            <End Role="ProgramHeaderMovement" EntitySet="ProgramHeaderMovements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProgramHeaderMovement_ProgramHeader" Association="Self.FK_ProgramHeaderMovement_ProgramHeader">
+            <End Role="ProgramHeader" EntitySet="ProgramHeaders" />
+            <End Role="ProgramHeaderMovement" EntitySet="ProgramHeaderMovements" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AscendDbModelStoreContainer" CdmEntityContainer="AscendDbEntities">
+          <EntitySetMapping Name="AscendUsers">
+            <EntityTypeMapping TypeName="AscendDbModel.AscendUser">
+              <MappingFragment StoreEntitySet="AscendUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Movements">
+            <EntityTypeMapping TypeName="AscendDbModel.Movement">
+              <MappingFragment StoreEntitySet="Movement">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MovementName" ColumnName="MovementName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProgramHeaders">
+            <EntityTypeMapping TypeName="AscendDbModel.ProgramHeader">
+              <MappingFragment StoreEntitySet="ProgramHeader">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BlockNo" ColumnName="BlockNo" />
+                <ScalarProperty Name="WeekNo" ColumnName="WeekNo" />
+                <ScalarProperty Name="DayNo" ColumnName="DayNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProgramHeaderMovements">
+            <EntityTypeMapping TypeName="AscendDbModel.ProgramHeaderMovement">
+              <MappingFragment StoreEntitySet="ProgramHeaderMovement">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProgramHeaderId" ColumnName="ProgramHeaderId" />
+                <ScalarProperty Name="MovementId" ColumnName="MovementId" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Reps" ColumnName="Reps" />
+                <ScalarProperty Name="Sets" ColumnName="Sets" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="RPE" ColumnName="RPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="AscendDbModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
