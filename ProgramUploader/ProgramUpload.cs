@@ -54,11 +54,13 @@ namespace ProgramUploader
                     connection.Open();
                     DataTable dtSheet = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
 
+                    // Select the sheet you want to upload
+
                     foreach (DataRow row in dtSheet.Rows)
                     {
                         string sheetName = row["TABLE_NAME"].ToString();
 
-                        if (sheetName.EndsWith("$"))
+                        if (sheetName.EndsWith("$") || sheetName.EndsWith("'$"))
                         {
                             // Get the sheet
                             using (OleDbCommand cmd = connection.CreateCommand())
